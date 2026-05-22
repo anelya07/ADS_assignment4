@@ -4,7 +4,7 @@ import java.util.Queue;
 public class Graph {
     private int V;
     private int E;
-    LinkedList<Integer> adj[];
+    LinkedList<int[]> adj[];
 
     public Graph(int nodes) {
         V = nodes;
@@ -21,8 +21,14 @@ public class Graph {
     }
 
     public void addEdge(int u, int v) {
-        adj[u].add(v);
-        adj[v].add(u);
+        adj[u].add(new int[]{v, 1});
+        adj[v].add(new int[]{u, 1});
+        E++;
+    }
+
+    public void addWeightedEdge(int u, int v, int weight) {
+        adj[u].add(new int[]{v, weight});
+        adj[v].add(new int[]{u, weight});
         E++;
     }
 
@@ -31,7 +37,7 @@ public class Graph {
         for (int v = 0; v < V; v++) {
             System.out.print("AdjList[" + v + "]: ");
             for (int w = 0; w < adj[v].size(); w++) {
-                System.out.print(adj[v].get(w) + " ");
+                System.out.print(adj[v].get(w)[0] + " ");
             }
             System.out.println();
         }
@@ -50,9 +56,10 @@ public class Graph {
             System.out.print(u + " ");
 
             for (int w = 0; w < adj[u].size(); w++) {
-                if (!visited[adj[u].get(w)]) {
-                    visited[adj[u].get(w)] = true;
-                    q.add(adj[u].get(w));
+                int neighbor = adj[u].get(w)[0];
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.add(neighbor);
                 }
             }
         }
@@ -71,8 +78,9 @@ public class Graph {
         System.out.print(v + " ");
 
         for (int w = 0; w < adj[v].size(); w++) {
-            if (!visited[adj[v].get(w)]) {
-                visitVertex(adj[v].get(w), visited);
+            int neighbor = adj[v].get(w)[0];
+            if (!visited[neighbor]) {
+                visitVertex(neighbor, visited);
             }
         }
     }
