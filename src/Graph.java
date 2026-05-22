@@ -37,7 +37,9 @@ public class Graph {
         for (int v = 0; v < V; v++) {
             System.out.print("AdjList[" + v + "]: ");
             for (int w = 0; w < adj[v].size(); w++) {
-                System.out.print(adj[v].get(w)[0] + " ");
+                int neighbor = adj[v].get(w)[0];
+                int weight = adj[v].get(w)[1];
+                System.out.print("(" + neighbor + ", weight=" + weight + ") ");
             }
             System.out.println();
         }
@@ -81,6 +83,47 @@ public class Graph {
             int neighbor = adj[v].get(w)[0];
             if (!visited[neighbor]) {
                 visitVertex(neighbor, visited);
+            }
+        }
+    }
+
+    public void dijkstra(int start) {
+        int[] dist = new int[V];
+        boolean[] visited = new boolean[V];
+
+        for (int i = 0; i < V; i++) {
+            dist[i] = Integer.MAX_VALUE;
+        }
+
+        dist[start] = 0;
+        for (int i = 0; i < V; i++) {
+            int u = -1;
+            for (int v = 0; v < V; v++) {
+                if (!visited[v] && (u == -1 || dist[v] < dist[u])) {
+                    u = v;
+                }
+            }
+            if (dist[u] == Integer.MAX_VALUE) {
+                break;
+            }
+            visited[u] = true;
+
+            for (int w = 0; w < adj[u].size(); w++) {
+                int neighbor = adj[u].get(w)[0];
+                int weight = adj[u].get(w)[1];
+
+                if (dist[u] + weight < dist[neighbor]) {
+                    dist[neighbor] = dist[u] + weight;
+                }
+            }
+        }
+
+        System.out.println("Dijkstra shortest paths from vertex " + start + ":");
+        for (int v = 0; v < V; v++) {
+            if (dist[v] == Integer.MAX_VALUE) {
+                System.out.println("  Vertex " + v + ": unreachable");
+            } else {
+                System.out.println("  Vertex " + v + ": " + dist[v]);
             }
         }
     }
