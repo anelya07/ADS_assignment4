@@ -103,7 +103,7 @@ public class Graph {
                     u = v;
                 }
             }
-            if (dist[u] == Integer.MAX_VALUE) {
+            if (u == -1 || dist[u] == Integer.MAX_VALUE) {
                 break;
             }
             visited[u] = true;

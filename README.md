@@ -5,15 +5,14 @@ A graph is a data structure consisting of vertices(nodes) and edges(connections 
 - **Vertex** - a node that holds a single item. Each vertex has a list of adjacent vertices. When there is an edge connecting two vertices, we say that the vertices are adjacent to one another and that the edge is incident to both vertices.
 - **Edge** - a connection between two vertices. Both vertices must exist before an edge can be created between them.
 
-In this project I implemented an undirected graph using an adjacency listа and applied two standard graph traversal algorithms(BFS and DFS) on graphs of different sizes to compare their behavior and performance.
+In this project I implemented an undirected graph using an adjacency list and applied two standard graph traversal algorithms(BFS and DFS) on graphs of different sizes to compare their behavior and performance.
 
 ## Class Descriptions
 * **Vertex.java** - represents a single node in the graph. Contains a private field id as a unique identifier, a constructor, a getter, and a toString() method.
-* **Edge.java** - represents a connection between two vertices. Contains private fields source and destination, a constructor, getters, and a toString() method.
+* **Edge.java** - represents a connection between two vertices. Contains private fields source, destination and weight, a constructor, getters, and a toString() method.
 * **Graph.java** - represents the graph structure using an adjacency list - each vertex stores a list of its neighbors. The class contains methods to add vertices and edges, print the graph structure, and run BFS and DFS traversals. 
 * **Experiment.java** - handles performance testing. Creates graphs of sizes 10, 30, and 100 vertices, runs BFS and DFS on each, measures execution time using System.nanoTime(), and prints the results. 
-* **Main.java** - entry point of the program. Creates an Experiment object, runs all tests, and prints the results.
-
+* **Main.java** - entry point of the program. Creates an Experiment object, runs all tests, prints the results and runs Dijkstra's algorithm on a small weighted graph.
 ## Algorithm Descriptions
 
 ### Depth-First Search (DFS)
@@ -82,3 +81,20 @@ DFS does not guarantee the shortest path. On very large or deep graphs, deep rec
 During this assignment I learned how graph traversal algorithms systematically visit every node in a graph. What surprised me was how different BFS and DFS feel even though they both visit every vertex exactly once and have the same O(V + E) complexity. BFS explores the graph level by level and always finds the closest vertices first, which makes it useful for shortest path problems. DFS dives as deep as possible into one path before backtracking, which makes it better suited for cycle detection and maze solving.
 
 The main challenge I faced was implementing DFS correctly using recursion. At first I was confused about how backtracking works, but once I understood that the recursive call stack acts as the stack, it became clear. I also had to be careful with the visited[] array in both algorithms - without it the algorithms would loop forever on graphs with cycles. Overall this assignment gave me a solid understanding of how graphs work and why the choice of traversal algorithm matters depending on the problem.
+
+## Dijkstra's Algorithm
+
+### Description
+Dijkstra's algorithm finds the shortest path from a starting vertex to all other vertices in a weighted graph. Each edge has a weight that represents the cost of traveling between two vertices.
+
+### How it works
+The algorithm starts at the source vertex with distance 0. All other vertices are set to infinity at the beginning. On each step it picks the unvisited vertex with the smallest known distance, marks it as visited, and updates distances to its neighbors if a shorter path is found through it.
+
+### Implementation details
+- Edge class was extended with a weight field
+- Graph stores edges as int[] {neighbor, weight} in the adjacency list
+- No priority queue used — distances are found using a simple loop
+- Time complexity: O(V²) with simple array implementation
+
+### Output Example
+![img.png](docs/screenshots/img_4.png)
